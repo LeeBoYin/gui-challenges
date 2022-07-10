@@ -1,0 +1,16 @@
+@import "https://unpkg.com/open-props@1.4.2/open-props.min.css";
+@import "https://unpkg.com/open-props@1.4.2/normalize.min.css";
+
+#app {
+	padding: var(--size-6);
+	max-width: 960px;
+	margin: auto;
+}
+
+section {
+	margin: var(--size-8) 0;
+}
+
+p {
+	max-inline-size: initial;
+}

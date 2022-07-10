@@ -1,0 +1,141 @@
+@mixin hide-scrollbar() {
+	scrollbar-width: none; // firefox only
+	-ms-overflow-style: none; // Hide IE scrollbar
+	&::-webkit-scrollbar {
+		// hide Chrome Safari scrollbar
+		display: none;
+	}
+}
+
+.tabs {
+	--tab-icon-offset-width: 0;
+	--tab-transition-duration: 250ms;
+	--header-padding-x: var(--size-4);
+	--tab-padding-x: var(--size-4);
+	--tab-padding-y: var(--size-3);
+	--tab-icon-gap: var(--size-2);
+	--tab-icon-size: var(--size-4);
+	--indicator-size: var(--border-size-2);
+
+	&--show-icon {
+		--tab-icon-offset-width: calc(var(--tab-icon-size) + var(--tab-icon-gap)); // icon width + gap size
+	}
+
+	&__header {
+		position: relative;
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		display: flex;
+		border-bottom: var(--border-size-1) solid var(--surface-4);
+		user-select: none;
+		@include hide-scrollbar;
+	}
+
+	&__header-padding-left, &__header-padding-right {
+		flex: 0 0 auto;
+		height: 1px;
+	}
+	&__header-padding-left {
+		width: var(--header-padding-x);
+	}
+	&__header-padding-right {
+		width: calc(var(--header-padding-x) + var(--tab-icon-offset-width));
+	}
+	&__tab-list {
+		flex: 0 0 auto;
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: minmax(0, auto);
+		justify-content: left;
+		padding: 0;
+	}
+	&__tab {
+		text-decoration: none;
+		padding: var(--tab-padding-y) var(--tab-padding-x);
+		color: var(--text-1);
+		cursor: pointer;
+		position: relative; // for icon positioning
+		margin: 0;
+		@media (prefers-reduced-motion: no-preference) {
+			transition-property: transform, color;
+			transition-timing-function: ease-out;
+			transition-duration: var(--tab-transition-duration);
+		}
+
+		&--active {
+			color: var(--link);
+		}
+		&:focus {
+			outline: none;
+		}
+		&:focus-visible {
+			text-decoration: underline;
+		}
+	}
+	&--show-icon &__tab--active,
+	&--show-icon &__tab--active ~ &__tab {
+		// the active tab + all following tabs translate right for icon
+		transform: translateX(var(--tab-icon-offset-width));
+	}
+	&__tab-icon {
+		position: absolute;
+		box-sizing: content-box;
+		font-size: var(--tab-icon-size);
+		width: var(--tab-icon-size);
+		top: 0;
+		left: calc(-1 * var(--tab-icon-offset-width));
+		height: 100%; // vertical center-align icon
+		display: flex;
+		align-items: center;
+		padding-left: var(--tab-padding-x); // clickable area
+		transform-origin: right center;
+		transform: scale(0);
+		@media (prefers-reduced-motion: no-preference) {
+			transition: transform var(--tab-transition-duration) ease-out;
+		}
+	}
+	&__tab--active > &__tab-icon {
+		transform: scale(1);
+		@media (prefers-reduced-motion: no-preference) {
+			will-change: transform; // fix jitter on iOS
+		}
+	}
+	&__indicator {
+		height: var(--indicator-size);
+		width: 1px;
+		background-color: var(--link);
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		transform-origin: left center;
+		transform: scaleX(var(--indicator-width)) translateX(calc(1px * var(--indicator-offset) / var(--indicator-width)));
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition-property: transform;
+			transition-duration: var(--tab-transition-duration);
+			transition-timing-function: ease-out;
+			will-change: transform;  // fix jitter on iOS
+		}
+	}
+
+	&--has-content {
+		display: grid;
+		grid-template-areas:
+			'header'
+			'content';
+		grid-template-rows: auto minmax(0, 1fr);
+		height: 100%;
+	}
+	&--has-content > &__header {
+		grid-area: header;
+	}
+	&__content {
+		grid-area: content;
+		overflow-y: auto;
+		display: none;
+
+		&--active {
+			display: block;
+		}
+	}
+}
