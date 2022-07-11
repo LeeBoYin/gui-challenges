@@ -118,8 +118,8 @@ export default {
     }
   },
   mounted() {
-    this.updateIndicatorPosition();
-    this.scrollHeaderToActiveTab();
+    this.$nextTick(this.updateIndicatorPosition);
+    this.$nextTick(this.scrollHeaderToActiveTab);
     setMouseDragToScroll(this.$refs.header);
   },
   beforeDestroy() {
@@ -147,7 +147,6 @@ export default {
         const iconElement = activeTabElement.querySelector('.tabs__tab-icon');
         this.indicatorRight -= iconElement.offsetLeft;
       }
-  console.log('updateIndicatorPosition', this.indicatorLeft, this.indicatorRight);
     },
     scrollHeaderToActiveTab() {
       if (this.activeTabIndex === -1) {
@@ -159,7 +158,7 @@ export default {
       scrollTo({
         scrollElement: headerElement,
         x: Math.min(Math.max(0, target), headerElement.scrollWidth - headerElement.clientWidth),
-        duration: parseInt(window.getComputedStyle(this.$el).getPropertyValue('--tab-transition-duration')),
+        duration: parseInt(window.getComputedStyle(this.$el).getPropertyValue('--tab-transition-duration-ms')),
       });
     },
   },

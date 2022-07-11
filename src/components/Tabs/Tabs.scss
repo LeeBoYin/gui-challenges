@@ -9,7 +9,7 @@
 
 .tabs {
 	--tab-icon-offset-width: 0;
-	--tab-transition-duration: 250ms;
+	--tab-transition-duration-ms: 250;
 	--header-padding-x: var(--size-4);
 	--tab-padding-x: var(--size-4);
 	--tab-padding-y: var(--size-3);
@@ -59,7 +59,7 @@
 		@media (prefers-reduced-motion: no-preference) {
 			transition-property: transform, color;
 			transition-timing-function: ease-out;
-			transition-duration: var(--tab-transition-duration);
+			transition-duration: calc(1ms * var(--tab-transition-duration-ms));
 		}
 
 		&--active {
@@ -91,7 +91,7 @@
 		transform-origin: right center;
 		transform: scale(0);
 		@media (prefers-reduced-motion: no-preference) {
-			transition: transform var(--tab-transition-duration) ease-out;
+			transition: transform calc(1ms * var(--tab-transition-duration-ms)) ease-out;
 		}
 	}
 	&__tab--active > &__tab-icon {
@@ -112,7 +112,7 @@
 
 		@media (prefers-reduced-motion: no-preference) {
 			transition-property: transform;
-			transition-duration: var(--tab-transition-duration);
+			transition-duration: calc(1ms * var(--tab-transition-duration-ms));
 			transition-timing-function: ease-out;
 			will-change: transform;  // fix jitter on iOS
 		}
