@@ -1,4 +1,5 @@
 # Tabs
+[Demo](https://boyin-gui-challenges.netlify.app/components/tabs/)
 
 ## UI Challenges
 ### Animate tabs indicator's position and size
